@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Dashboard – NISHAT</title>
+
+    <link rel="stylesheet" href="/css/firstClone.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/sales.css">
+</head>
+<body>
+
+<button class="menu-btn" onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<div class="admin-layout">
+    <aside class="admin-sidebar">
+        <div class="admin-brand">
+            <img src="/images/nishatlogo.png" alt="Nishat Logo">
+            <span>Admin Panel</span>
+        </div>
+        <nav class="admin-nav">
+            <a href="/admin" class="admin-nav-link">
+                <i class="fa-solid fa-gauge"></i> Dashboard
+            </a>
+            <a href="/sales" class="admin-nav-link active">
+                <i class="fa-solid fa-chart-line"></i> Sales
+            </a>
+            <a href="/admin/products/new" class="admin-nav-link">
+                <i class="fa-solid fa-plus"></i> Add Product
+            </a>
+            <a href="/products" class="admin-nav-link">
+                <i class="fa-solid fa-store"></i> View Store
+            </a>
+            <a href="/" class="admin-nav-link">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+            <form action="/auth/logout" method="POST">
+                <button type="submit" class="admin-nav-link logout-btn"
+                    style="width:100%;background:none;border:none;cursor:pointer;color:#e57373;text-align:left;">
+                    <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
+                </button>
+            </form>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        <div class="sales-wrapper">
+
+            <div class="sales-topbar">
+                <div>
+                    <p class="admin-breadcrumb">Admin <i class="fa-solid fa-chevron-right"></i> Sales</p>
+                    <h1>
+                        <i class="fa-solid fa-chart-line"></i>
+                        Sales Dashboard
+                    </h1>
+                </div>
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <span class="live-badge">
+                        <span class="live-dot"></span>
+                        Live · updates every 10s
+                    </span>
+                    <a href="/admin" class="admin-btn admin-btn-cancel">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card revenue">
+                    <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    <div class="stat-label">Total Revenue</div>
+                    <div class="stat-value" id="stat-revenue">
+                        Rs. <%= totalRevenue.toLocaleString() %>
+                    </div>
+                    <div class="stat-sub">All-time earnings</div>
+                </div>
+
+                <div class="stat-card orders">
+                    <div class="stat-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+                    <div class="stat-label">Total Orders</div>
+                    <div class="stat-value" id="stat-orders">
+                        <%= totalOrders %>
+                    </div>
+                    <div class="stat-sub">Orders placed</div>
+                </div>
+
+                <div class="stat-card top-prod">
+                    <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+                    <div class="stat-label">Top Product</div>
+                    <div class="stat-value" id="stat-top-product" style="font-size:1.1rem; padding-top:.25rem;">
+                        <% if (topProduct) { %>
+                            <%= topProduct.name %>
+                        <% } else { %>
+                            —
+                        <% } %>
+                    </div>
+                    <div class="stat-sub" id="stat-top-qty">
+                        <% if (topProduct) { %>
+                            <%= topProduct.totalQuantity %> units sold
+                        <% } else { %>
+                            No orders yet
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Recent Orders
+            </h2>
+
+            <div class="table-card">
+                <table class="sales-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (recentOrders && recentOrders.length > 0) { %>
+                            <% recentOrders.forEach((order, i) => { %>
+                            <tr>
+                                <td><%= i + 1 %></td>
+                                <td>
+                                    <strong><%= order.user ? order.user.name : 'Unknown' %></strong><br>
+                                    <small style="color:#9ca3af;"><%= order.user ? order.user.email : '' %></small>
+                                </td>
+                                <td>
+                                    <% order.items.forEach(item => { %>
+                                        <div><%= item.product ? item.product.name : 'Deleted product' %> × <%= item.quantity %></div>
+                                    <% }); %>
+                                </td>
+                                <td><strong>Rs. <%= order.total.toLocaleString() %></strong></td>
+                                <td>
+                                    <span class="status-badge status-<%= order.status %>">
+                                        <%= order.status %>
+                                    </span>
+                                </td>
+                                <td><%= new Date(order.createdAt).toLocaleDateString('en-PK', { day:'2-digit', month:'short', year:'numeric' }) %></td>
+                            </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="6" style="text-align:center; color:#9ca3af; padding:2rem;">
+                                    No orders found yet.
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="last-updated">
+                Last updated: <span id="last-updated-time"><%= new Date().toLocaleTimeString() %></span>
+            </p>
+
+        </div>
+    </main>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+    function toggleSidebar() {
+        document.querySelector('.admin-sidebar').classList.toggle('show');
+    }
+
+    $(document).ready(function () {
+
+        function fetchSalesData() {
+            $.ajax({
+                url:      '/api/sales-data',
+                method:   'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#stat-revenue').text('Rs. ' + Number(data.totalRevenue).toLocaleString());
+                    $('#stat-orders').text(data.totalOrders);
+
+                    if (data.topProduct) {
+                        $('#stat-top-product').text(data.topProduct.name);
+                        $('#stat-top-qty').text(data.topProduct.totalQuantity + ' units sold');
+                    } else {
+                        $('#stat-top-product').text('—');
+                        $('#stat-top-qty').text('No orders yet');
+                    }
+
+                    $('#last-updated-time').text(new Date().toLocaleTimeString());
+                },
+                error: function (xhr, status, err) {
+                    console.warn('Sales data fetch failed:', err);
+                }
+            });
+        }
+
+        setInterval(fetchSalesData, 10000);
+    });
+</script>
+
+</body>
+</html>

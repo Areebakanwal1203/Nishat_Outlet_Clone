@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product – Admin</title>
+    <link rel="stylesheet" href="/css/firstClone.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="admin-layout">
+    <aside class="admin-sidebar">
+        <div class="admin-brand">
+            <img src="/images/nishatlogo.png" alt="Nishat Logo">
+            <span>Admin Panel</span>
+        </div>
+        <nav class="admin-nav">
+            <a href="/admin" class="admin-nav-link">
+                <i class="fa-solid fa-gauge"></i> Dashboard
+            </a>
+            <a href="/admin/products/new" class="admin-nav-link">
+                <i class="fa-solid fa-plus"></i> Add Product
+            </a>
+            <a href="/products" class="admin-nav-link">
+                <i class="fa-solid fa-store"></i> View Store
+            </a>
+            <a href="/" class="admin-nav-link">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+
+            <form action="/auth/logout" method="POST">
+            <button type="submit" class="admin-nav-link logout-btn"
+            style="width:100%;background:none;border:none;cursor:pointer;color:#e57373;text-align:left;">
+            <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
+                </button>
+            </form>
+
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        <div class="admin-topbar">
+            <h1 class="admin-title">
+                <i class="fa-solid fa-pen-to-square"></i> Edit Product
+            </h1>
+            <a href="/admin" class="admin-btn admin-btn-cancel">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </a>
+        </div>
+
+        <% if (error) { %>
+        <div class="admin-alert admin-alert-error">
+            <i class="fa-solid fa-triangle-exclamation"></i> <%= error %>
+        </div>
+        <% } %>
+
+        <div class="admin-card form-card">
+            <form action="/admin/products/<%= product._id %>" method="POST" enctype="multipart/form-data">
+
+                <div class="form-grid">
+                    <!-- Name -->
+                    <div class="form-group full">
+                        <label class="form-label">Product Name <span class="required">*</span></label>
+                        <input type="text" name="name" class="form-input"
+                               value="<%= product.name %>" required>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="form-group">
+                        <label class="form-label">Price (PKR) <span class="required">*</span></label>
+                        <input type="number" name="price" class="form-input"
+                               value="<%= product.price %>" min="0" required>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label class="form-label">Category <span class="required">*</span></label>
+                        <input type="text" name="category" class="form-input"
+                               value="<%= product.category %>" required>
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="form-group">
+                        <label class="form-label">Rating (1–5)</label>
+                        <input type="number" name="rating" class="form-input"
+                               value="<%= product.rating %>" min="1" max="5" step="0.1">
+                    </div>
+
+                    <!-- Stock -->
+                    <div class="form-group">
+                        <label class="form-label">Stock</label>
+                        <input type="number" name="stock" class="form-input"
+                               value="<%= product.stock %>" min="0">
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group full">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-textarea" rows="3"><%= product.description %></textarea>
+                    </div>
+
+                    <!-- Current Image -->
+                    <div class="form-group full">
+                        <label class="form-label">Current Image</label>
+                        <img src="<%= product.image %>" id="imagePreview"
+                             class="img-preview" alt="Current image">
+                    </div>
+
+                    <!-- New Image Upload -->
+                    <div class="form-group full">
+                        <label class="form-label">Upload New Image (optional)</label>
+                        <div class="upload-area">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <p>Drag & drop or <span>browse</span></p>
+                            <input type="file" name="image" accept="image/*"
+                                   onchange="previewImage(event)">
+                        </div>
+                    </div>
+
+                    <!-- OR image URL -->
+                    <div class="form-group full">
+                        <label class="form-label">— OR — Replace with Image URL</label>
+                        <input type="url" name="imageUrl" class="form-input"
+                               placeholder="https://example.com/image.jpg"
+                               value="<%= product.image && product.image.startsWith('http') ? product.image : '' %>"
+                               oninput="previewUrl(this.value)">
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <a href="/admin" class="admin-btn admin-btn-cancel">Cancel</a>
+                    <button type="submit" class="admin-btn admin-btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+<script>
+    function previewImage(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            document.getElementById('imagePreview').src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function previewUrl(url) {
+        if (url) document.getElementById('imagePreview').src = url;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard – NISHAT</title>
+    <link rel="stylesheet" href="/css/firstClone.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<button class="menu-btn" onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- ── Admin Sidebar ─────────────────────────────────────────────── -->
+<div class="admin-layout">
+    <aside class="admin-sidebar">
+        <div class="admin-brand">
+            <img src="/images/nishatlogo.png" alt="Nishat Logo">
+            <span>Admin Panel</span>
+        </div>
+        <nav class="admin-nav">
+            <a href="/admin" class="admin-nav-link active">
+                <i class="fa-solid fa-gauge"></i> Dashboard
+            </a>
+            <a href="/admin/products/new" class="admin-nav-link">
+                <i class="fa-solid fa-plus"></i> Add Product
+            </a>
+            <a href="/products" class="admin-nav-link">
+                <i class="fa-solid fa-store"></i> View Store
+            </a>
+            <a href="/sales" class="admin-nav-link">
+                <i class="fa-solid fa-chart-line"></i> Sales
+            </a>
+            <a href="/" class="admin-nav-link">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+
+            <form action="/auth/logout" method="POST">
+            <button type="submit" class="admin-nav-link logout-btn"
+            style="width:100%;background:none;border:none;cursor:pointer;color:#e57373;text-align:left;">
+            <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
+    </button>
+</form>
+
+        </nav>
+    </aside>
+
+    <!-- ── Main Content ──────────────────────────────────────────── -->
+    <main class="admin-main">
+
+        <div class="admin-topbar">
+    <div>
+        <p class="admin-breadcrumb">Admin <i class="fa-solid fa-chevron-right"></i> Dashboard</p>
+        <h1 class="admin-title">
+            <i class="fa-solid fa-gauge"></i> Dashboard
+        </h1>
+    </div>
+    <div class="admin-topbar-right">
+        <a href="/" class="admin-btn admin-btn-cancel">
+            <i class="fa-solid fa-arrow-left"></i> Back to Store
+        </a>
+        <a href="/admin/products/new" class="admin-btn admin-btn-primary">
+            <i class="fa-solid fa-plus"></i> Add New Product
+        </a>
+    </div>
+</div>
+
+        <!-- Success message -->
+        <% if (success) { %>
+        <div class="admin-alert admin-alert-success">
+            <i class="fa-solid fa-circle-check"></i> <%= success %>
+        </div>
+        <% } %>
+
+        <!-- ── Stats Cards ──────────────────────────────────────── -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#e8f5e9">
+                    <i class="fa-solid fa-boxes-stacked" style="color:#2e7d32"></i>
+                </div>
+                <div>
+                    <p class="stat-label">Total Products</p>
+                    <h2 class="stat-value"><%= products.length %></h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#fff3e0">
+                    <i class="fa-solid fa-tags" style="color:#e65100"></i>
+                </div>
+                <div>
+                    <p class="stat-label">Categories</p>
+                    <h2 class="stat-value"><%= categories.length %></h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#fce4ec">
+                    <i class="fa-solid fa-warehouse" style="color:#c62828"></i>
+                </div>
+                <div>
+                    <p class="stat-label">Total Stock</p>
+                    <h2 class="stat-value"><%= totalStock %></h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#e3f2fd">
+                    <i class="fa-solid fa-triangle-exclamation" style="color:#1565c0"></i>
+                </div>
+                <div>
+                    <p class="stat-label">Low Stock Items</p>
+                    <h2 class="stat-value"><%= products.filter(p => p.stock < 10).length %></h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Products Table ──────────────────────────────────── -->
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h2>All Products</h2>
+                <span class="badge"><%= products.length %> items</span>
+            </div>
+
+            <div class="table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price (PKR)</th>
+                            <th>Rating</th>
+                            <th>Stock</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% products.forEach(product => { %>
+                        <tr>
+                            <td>
+                                <img class="table-img" src="<%= product.image %>" alt="<%= product.name %>">
+                            </td>
+                            <td class="prod-name-cell"><%= product.name %></td>
+                            <td><span class="cat-badge"><%= product.category %></span></td>
+                            <td>PKR <%= product.price.toLocaleString() %></td>
+                            <td>
+                                <span class="rating-cell">
+                                    <i class="fa-solid fa-star" style="color:#f59e0b"></i>
+                                    <%= product.rating %>
+                                </span>
+                            </td>
+                            <td>
+                                <% if (product.stock === 0) { %>
+                                    <span class="stock-badge out">Out of Stock</span>
+                                <% } else if (product.stock < 10) { %>
+                                    <span class="stock-badge low"><%= product.stock %> left</span>
+                                <% } else { %>
+                                    <span class="stock-badge ok"><%= product.stock %></span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <div class="action-btns">
+                                    <a href="/admin/products/<%= product._id %>/edit"
+                                       class="admin-btn admin-btn-edit">
+                                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                                    </a>
+                                    <form action="/admin/products/<%= product._id %>/delete"
+                                          method="POST"
+                                          onsubmit="return confirmDelete('<%= product.name %>')">
+                                        <button type="submit" class="admin-btn admin-btn-delete">
+                                            <i class="fa-solid fa-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- ── Delete Confirmation Modal ─────────────────────────────────── -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+        <div class="modal-icon">
+            <i class="fa-solid fa-trash"></i>
+        </div>
+        <h2 class="modal-title">Delete Product?</h2>
+        <p class="modal-msg" id="modalMsg">This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button class="admin-btn admin-btn-cancel" onclick="cancelDelete()">Cancel</button>
+            <button class="admin-btn admin-btn-delete" id="confirmDeleteBtn">Yes, Delete</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+function toggleSidebar() {
+    document.querySelector('.admin-sidebar')
+            .classList.toggle('show');
+}
+
+    let pendingForm = null;
+
+    function confirmDelete(productName) {
+        document.getElementById('modalMsg').textContent =
+            `Are you sure you want to delete "${productName}"? This cannot be undone.`;
+        document.getElementById('modalOverlay').classList.add('show');
+
+        // Store the form that was submitted
+        pendingForm = event.target.closest('form');
+        return false; // prevent default submit
+    }
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+        if (pendingForm) pendingForm.submit();
+    });
+
+    function cancelDelete() {
+        document.getElementById('modalOverlay').classList.remove('show');
+        pendingForm = null;
+    }
+</script>
+
+</body>
+</html>

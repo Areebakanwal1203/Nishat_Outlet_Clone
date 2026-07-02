@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register – NISHAT</title>
+    <link rel="stylesheet" href="/css/firstClone.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { background: #f4f5f7; }
+        .auth-wrapper { display:flex; align-items:center; justify-content:center; min-height:80vh; padding:40px 16px; }
+        .auth-card { background:#fff; border-radius:14px; box-shadow:0 4px 24px rgba(0,0,0,0.10); padding:44px 40px; width:100%; max-width:460px; }
+        .auth-logo { text-align:center; margin-bottom:28px; }
+        .auth-logo img { width:110px; }
+        .auth-title { text-align:center; font-size:22px; font-weight:700; letter-spacing:1.5px; margin-bottom:6px; color:#111; }
+        .auth-sub { text-align:center; color:#888; font-size:13px; margin-bottom:28px; }
+        .flash-msg { padding:11px 16px; border-radius:8px; margin-bottom:18px; font-size:13px; display:flex; align-items:center; gap:9px; }
+        .flash-error   { background:#fce4ec; color:#c62828; border:1px solid #f8bbd0; }
+        .flash-success { background:#e8f5e9; color:#2e7d32; border:1px solid #c8e6c9; }
+        .form-group { margin-bottom:18px; }
+        .form-label { display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:#555; margin-bottom:6px; }
+        .hint { font-size:11px; color:#aaa; margin-top:4px; }
+        .input-wrap { position:relative; }
+        .input-wrap i { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:#aaa; font-size:14px; }
+        .form-input { width:100%; padding:11px 14px 11px 38px; border:1.5px solid #e0e0e0; border-radius:7px; font-size:14px; outline:none; transition:0.2s; box-sizing:border-box; font-family:inherit; }
+        .form-input:focus { border-color:#c9a84c; box-shadow:0 0 0 3px rgba(201,168,76,0.15); }
+        .btn-submit { width:100%; padding:13px; background:#111; color:#fff; border:none; border-radius:7px; font-size:14px; font-weight:700; letter-spacing:1px; cursor:pointer; transition:0.2s; margin-top:6px; }
+        .btn-submit:hover { background:#c9a84c; }
+        .auth-footer { text-align:center; margin-top:22px; font-size:13px; color:#666; }
+        .auth-footer a { color:#c9a84c; font-weight:600; text-decoration:none; }
+    </style>
+</head>
+<body>
+
+<header class="main-header">
+    <div id="menuBar">
+        <div class="left-header"></div>
+        <a href="/"><img id="logo" src="/images/nishatlogo.png" alt="Nishat Logo"></a>
+        <div class="right">
+            <a href="/" class="nav-pill nav-pill-outline">
+                <i class="fa-solid fa-arrow-left"></i><span class="pill-text">Back to Shop</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-logo"><img src="/images/nishatlogo.png" alt="Logo"></div>
+        <h1 class="auth-title">CREATE ACCOUNT</h1>
+        <p class="auth-sub">Join Nishat Linen today</p>
+
+        <% if (error && error.length > 0) { %>
+            <% error.forEach(msg => { %>
+                <div class="flash-msg flash-error"><i class="fa-solid fa-circle-exclamation"></i> <%= msg %></div>
+            <% }) %>
+        <% } %>
+        <% if (success && success.length > 0) { %>
+            <% success.forEach(msg => { %>
+                <div class="flash-msg flash-success"><i class="fa-solid fa-circle-check"></i> <%= msg %></div>
+            <% }) %>
+        <% } %>
+
+        <form action="/auth/register" method="POST">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" name="name" class="form-input" placeholder="Your full name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" name="email" class="form-input" placeholder="you@example.com" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" name="password" class="form-input" placeholder="Min. 6 characters" required minlength="6">
+                </div>
+                <p class="hint">Must be at least 6 characters.</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" name="confirmPassword" class="form-input" placeholder="Re-enter password" required minlength="6">
+                </div>
+            </div>
+            <button type="submit" class="btn-submit">CREATE ACCOUNT</button>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account? <a href="/auth/login">Sign in</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

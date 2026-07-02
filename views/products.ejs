@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products – NISHAT OUTLET</title>
+    <link rel="stylesheet" href="/css/firstClone.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ── Announcement Bar ─────────────────────────────────────── -->
+    <div class="announcement-bar">
+        Today deal sale off 50%. End in time. Hurry Up!!
+    </div>
+
+    <!-- ── Header ───────────────────────────────────────────────── -->
+<header class="main-header">
+
+    <div class="mobile-overlay" id="mobileOverlay" onclick="closeSidebar()"></div>
+
+    <aside class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-header">
+            <h2>MENU</h2>
+            <button class="sidebar-close" onclick="closeSidebar()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="/collections/best-bargains">BEST BARGAINS</a></li>
+            <li><a href="/collections/unstitched">UNSTITCHED</a></li>
+            <li><a href="/collections/loose-fabric">LOOSE FABRIC</a></li>
+            <li><a href="/collections/ready-to-wear">READY TO WEAR</a></li>
+            <li><a href="/collections/luxury">LUXURY</a></li>
+            <li><a href="/collections/men">MEN</a></li>
+            <li><a href="/collections/lowers">LOWERS</a></li>
+            <li><a href="/collections/fashion">FASHION</a></li>
+            <li><a href="/products" class="all-products-link">ALL PRODUCTS</a></li>
+        </ul>
+    </aside>
+
+    <div id="menuBar">
+        <div class="left-header">
+            <button class="hamburger-btn" onclick="openSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <a href="/">
+            <img id="logo" src="/images/nishatlogo.png" alt="nishat logo">
+        </a>
+
+        <div class="right">
+            <a href="#" class="icon-link"><i class="fa-solid fa-magnifying-glass icons"></i></a>
+            <a href="#" class="icon-link"><i class="fa-regular fa-heart icons"></i></a>
+            <a href="/checkout" class="icon-link"><i class="fa-solid fa-bag-shopping icons"></i></a>
+
+            <% if (currentUser && currentUser.role === 'admin') { %>
+                <a href="/admin" class="nav-pill nav-pill-back">
+                    <i class="fa-solid fa-gauge"></i><span class="pill-text">Admin Panel</span>
+                </a>
+            <% } %>
+
+            <% if (!currentUser) { %>
+                <a href="/auth/login" class="nav-pill nav-pill-outline">
+                    <i class="fa-solid fa-right-to-bracket"></i><span class="pill-text">Login</span>
+                </a>
+                <a href="/auth/register" class="nav-pill nav-pill-solid">
+                    <i class="fa-solid fa-user-plus"></i><span class="pill-text">Register</span>
+                </a>
+            <% } else { %>
+                <form action="/auth/logout" method="POST" style="display:inline;">
+                    <button type="submit" class="nav-pill nav-pill-logout">
+                        <i class="fa-solid fa-right-from-bracket"></i><span class="pill-text">Logout</span>
+                    </button>
+                </form>
+            <% } %>
+        </div>
+    </div>
+
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="/collections/best-bargains">BEST BARGAINS</a></li>
+            <li><a href="/collections/unstitched">UNSTITCHED</a></li>
+            <li><a href="/collections/loose-fabric">LOOSE FABRIC</a></li>
+            <li><a href="/collections/ready-to-wear">READY TO WEAR</a></li>
+            <li><a href="/collections/luxury">LUXURY</a></li>
+            <li><a href="/collections/men">MEN</a></li>
+            <li><a href="/collections/lowers">LOWERS</a></li>
+            <li><a href="/collections/fashion">FASHION</a></li>
+            <li><a href="/products" class="all-products-link">ALL PRODUCTS</a></li>
+        </ul>
+    </nav>
+</header>
+
+    <!-- ── Filter Overlay ────────────────────────────────────────── -->
+    <div class="filter-overlay" id="filterOverlay" onclick="closeFilter()"></div>
+
+    <!-- ── Filter Side Panel ─────────────────────────────────────── -->
+    <aside class="filter-panel" id="filterPanel">
+        <div class="filter-panel-header">
+            <h2><i class="fa-solid fa-sliders"></i> Filters</h2>
+            <button class="filter-close-btn" onclick="closeFilter()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form action="/products" method="GET" id="filterForm">
+            <!-- Keep search & sort when filtering -->
+            <input type="hidden" name="search" value="<%= search %>">
+            <input type="hidden" name="sort"   value="<%= sort %>">
+
+            <!-- ── Category ── -->
+            <div class="filter-section">
+                <h3 class="filter-section-title">
+                    <i class="fa-solid fa-tags"></i> Category
+                </h3>
+                <div class="filter-options">
+                    <label class="filter-radio">
+                        <input type="radio" name="category" value=""
+                               <%= category === '' ? 'checked' : '' %>>
+                        <span class="radio-custom"></span>
+                        All Categories
+                    </label>
+                    <% categories.forEach(cat => { %>
+                    <label class="filter-radio">
+                        <input type="radio" name="category" value="<%= cat %>"
+                               <%= category === cat ? 'checked' : '' %>>
+                        <span class="radio-custom"></span>
+                        <%= cat %>
+                    </label>
+                    <% }) %>
+                </div>
+            </div>
+
+            <!-- ── Price Range ── -->
+            <div class="filter-section">
+                <h3 class="filter-section-title">
+                    <i class="fa-solid fa-tag"></i> Price Range (PKR)
+                </h3>
+                <div class="price-inputs">
+                    <div class="price-input-wrap">
+                        <label>Min</label>
+                        <input type="number" name="minPrice" placeholder="0"
+                               value="<%= minPrice %>" min="0">
+                    </div>
+                    <span class="price-dash">—</span>
+                    <div class="price-input-wrap">
+                        <label>Max</label>
+                        <input type="number" name="maxPrice" placeholder="Any"
+                               value="<%= maxPrice %>" min="0">
+                    </div>
+                </div>
+                <div class="price-presets">
+                    <button type="button" class="preset-btn" onclick="setPrice(0, 2000)">Under 2K</button>
+                    <button type="button" class="preset-btn" onclick="setPrice(2000, 6000)">2K – 6K</button>
+                    <button type="button" class="preset-btn" onclick="setPrice(6000, 15000)">6K – 15K</button>
+                    <button type="button" class="preset-btn" onclick="setPrice(15000, '')">15K+</button>
+                </div>
+            </div>
+
+            <!-- ── Min Rating ── -->
+            <div class="filter-section">
+                <h3 class="filter-section-title">
+                    <i class="fa-solid fa-star"></i> Minimum Rating
+                </h3>
+                <div class="rating-options">
+                    <% [0, 3, 3.5, 4, 4.5].forEach(r => { %>
+                    <label class="filter-radio">
+                        <input type="radio" name="rating" value="<%= r %>"
+                               <%= parseFloat(rating) === r ? 'checked' : '' %>>
+                        <span class="radio-custom"></span>
+                        <% if (r === 0) { %>
+                            Any Rating
+                        <% } else { %>
+                            <span class="star-row">
+                                <% for(let i=1;i<=5;i++){ %>
+                                    <i class="fa-<%= i <= r ? 'solid' : 'regular' %> fa-star"></i>
+                                <% } %>
+                            </span>
+                            & above
+                        <% } %>
+                    </label>
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit" class="apply-btn">
+                    <i class="fa-solid fa-check"></i> Apply Filters
+                </button>
+                <a href="/products" class="clear-btn">
+                    <i class="fa-solid fa-rotate-left"></i> Clear All
+                </a>
+            </div>
+        </form>
+    </aside>
+
+    <!-- ── Main Content ───────────────────────────────────────────── -->
+    <main class="products-page">
+
+        <!-- Page Hero Banner -->
+        <div class="products-hero">
+            <div class="products-hero-content">
+                <p class="hero-sub">Discover Our</p>
+                <h1>All Products</h1>
+                <p class="hero-count"><%= totalProducts %> items found</p>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="products-toolbar">
+            <!-- Search Bar -->
+            <form action="/products" method="GET" class="search-form">
+                <input type="hidden" name="category" value="<%= category %>">
+                <input type="hidden" name="minPrice" value="<%= minPrice %>">
+                <input type="hidden" name="maxPrice" value="<%= maxPrice %>">
+                <input type="hidden" name="sort"     value="<%= sort %>">
+                <input type="hidden" name="rating"   value="<%= rating %>">
+                <div class="search-wrap">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" name="search" placeholder="Search products…"
+                           value="<%= search %>" class="search-input">
+                    <% if (search) { %>
+                    <a href="/products?category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&sort=<%= sort %>&rating=<%= rating %>"
+                       class="search-clear"><i class="fa-solid fa-xmark"></i></a>
+                    <% } %>
+                </div>
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+
+            <!-- Right Controls -->
+            <div class="toolbar-right">
+                <!-- Filter Toggle -->
+                <button class="filter-toggle-btn" onclick="openFilter()">
+                    <i class="fa-solid fa-sliders"></i>
+                    Filter
+                    <% const activeFilters = [category, minPrice, maxPrice, rating > 0 ? rating : ''].filter(Boolean).length; %>
+                    <% if (activeFilters > 0) { %>
+                    <span class="filter-badge"><%= activeFilters %></span>
+                    <% } %>
+                </button>
+
+                <!-- Sort Dropdown -->
+                <form action="/products" method="GET" class="sort-form">
+                    <input type="hidden" name="search"   value="<%= search %>">
+                    <input type="hidden" name="category" value="<%= category %>">
+                    <input type="hidden" name="minPrice" value="<%= minPrice %>">
+                    <input type="hidden" name="maxPrice" value="<%= maxPrice %>">
+                    <input type="hidden" name="rating"   value="<%= rating %>">
+                    <div class="sort-wrap">
+                        <i class="fa-solid fa-arrow-up-wide-short sort-icon"></i>
+                        <select name="sort" class="sort-select" onchange="this.form.submit()">
+                            <option value="default"    <%= sort === 'default'    ? 'selected' : '' %>>Default</option>
+                            <option value="price-asc"  <%= sort === 'price-asc'  ? 'selected' : '' %>>Price: Low → High</option>
+                            <option value="price-desc" <%= sort === 'price-desc' ? 'selected' : '' %>>Price: High → Low</option>
+                            <option value="rating"     <%= sort === 'rating'     ? 'selected' : '' %>>Top Rated</option>
+                            <option value="newest"     <%= sort === 'newest'     ? 'selected' : '' %>>Newest</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Active Filter Chips -->
+        <% if (search || category || minPrice || maxPrice || rating > 0) { %>
+        <div class="active-filters">
+            <span class="active-filter-label">Active:</span>
+            <% if (search) { %>
+            <span class="filter-chip">Search: "<%= search %>"
+                <a href="/products?category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&sort=<%= sort %>&rating=<%= rating %>">×</a>
+            </span>
+            <% } %>
+            <% if (category) { %>
+            <span class="filter-chip"><%= category %>
+                <a href="/products?search=<%= search %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&sort=<%= sort %>&rating=<%= rating %>">×</a>
+            </span>
+            <% } %>
+            <% if (minPrice || maxPrice) { %>
+            <span class="filter-chip">PKR <%= minPrice || '0' %> – <%= maxPrice || '∞' %>
+                <a href="/products?search=<%= search %>&category=<%= category %>&sort=<%= sort %>&rating=<%= rating %>">×</a>
+            </span>
+            <% } %>
+            <% if (rating > 0) { %>
+            <span class="filter-chip">★ <%= rating %>+
+                <a href="/products?search=<%= search %>&category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&sort=<%= sort %>">×</a>
+            </span>
+            <% } %>
+            <a href="/products" class="clear-all-link">Clear all</a>
+        </div>
+        <% } %>
+
+        <!-- Products Grid -->
+        <% if (products.length === 0) { %>
+        <div class="no-products">
+            <i class="fa-solid fa-box-open"></i>
+            <h2>No products found</h2>
+            <p>Try adjusting your filters or search terms</p>
+            <a href="/products" class="apply-btn">Browse All Products</a>
+        </div>
+        <% } else { %>
+        <div class="prod-grid">
+            <% products.forEach(product => { %>
+            <div class="prod-card">
+                <div class="prod-img-wrap">
+                    <img src="<%= product.image %>" alt="<%= product.name %>" loading="lazy">
+                    <% if (product.badge) { %>
+                    <span class="prod-badge"><%= product.badge %></span>
+                    <% } %>
+                    <div class="prod-overlay">
+                        <button class="overlay-btn">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <button class="overlay-btn add-cart-btn">
+                            <i class="fa-solid fa-bag-shopping"></i> Quick Add
+                        </button>
+                    </div>
+                </div>
+                <div class="prod-info">
+                    <span class="prod-category"><%= product.category %></span>
+                    <h3 class="prod-name"><%= product.name %></h3>
+                    <div class="prod-meta">
+                        <div class="prod-stars">
+                            <% for(let i=1; i<=5; i++) { %>
+                                <i class="fa-<%= i <= Math.round(product.rating) ? 'solid' : 'regular' %> fa-star"></i>
+                            <% } %>
+                            <span class="rating-num">(<%= product.rating %>)</span>
+                        </div>
+                        <% if (product.stock < 10 && product.stock > 0) { %>
+                        <span class="low-stock">Only <%= product.stock %> left!</span>
+                        <% } else if (product.stock === 0) { %>
+                        <span class="out-stock">Out of Stock</span>
+                        <% } %>
+                    </div>
+                    <div class="prod-price-row">
+                        <span class="prod-price">PKR <%= product.price.toLocaleString() %></span>
+                        <button class="cart-btn">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+
+        <!-- Pagination -->
+        <% if (totalPages > 1) { %>
+        <div class="pagination">
+            <!-- Previous -->
+            <% if (currentPage > 1) { %>
+            <a href="/products?page=<%= currentPage - 1 %>&search=<%= search %>&category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&sort=<%= sort %>&rating=<%= rating %>"
+               class="page-btn prev-btn">
+                <i class="fa-solid fa-chevron-left"></i> Prev
+            </a>
+            <% } else { %>
+            <span class="page-btn disabled"><i class="fa-solid fa-chevron-left"></i> Prev</span>
+            <% } %>
+
+            <!-- Page Numbers -->
+            <div class="page-numbers">
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <% if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) { %>
+                        <a href="/products?page=<%= i %>&search=<%= search %>&category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&sort=<%= sort %>&rating=<%= rating %>"
+                           class="page-num <%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+                    <% } else if (i === currentPage - 3 || i === currentPage + 3) { %>
+                        <span class="page-ellipsis">…</span>
+                    <% } %>
+                <% } %>
+            </div>
+
+            <!-- Next -->
+            <% if (currentPage < totalPages) { %>
+            <a href="/products?page=<%= currentPage + 1 %>&search=<%= search %>&category=<%= category %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&sort=<%= sort %>&rating=<%= rating %>"
+               class="page-btn next-btn">
+                Next <i class="fa-solid fa-chevron-right"></i>
+            </a>
+            <% } else { %>
+            <span class="page-btn disabled">Next <i class="fa-solid fa-chevron-right"></i></span>
+            <% } %>
+        </div>
+
+        <p class="page-info">
+            Showing page <%= currentPage %> of <%= totalPages %> 
+            (<%= totalProducts %> products)
+        </p>
+        <% } %>
+        <% } %>
+
+    </main>
+
+    <!-- WHITE TRUST-BADGE STRIP -->
+    <div class="footer-top">
+        <div class="footer-top-content">
+            <div class="footer-box">
+                <i class="fa-solid fa-truck"></i>
+                <div>
+                    <h4>Track Your Order</h4>
+                    <p>Click here for quick update</p>
+                </div>
+            </div>
+            <div class="footer-box">
+                <i class="fa-solid fa-headset"></i>
+                <div>
+                    <h4>SUPPORT 24/7</h4>
+                    <p>Contact us 24 hours a day, 7 days a week</p>
+                </div>
+            </div>
+            <div class="footer-box">
+                <i class="fa-solid fa-lock"></i>
+                <div>
+                    <h4>100% PAYMENT SECURE</h4>
+                    <p>We ensure secure payment with PEV</p>
+                </div>
+            </div>
+            <div class="footer-box">
+                <i class="fa-solid fa-credit-card"></i>
+                <div>
+                    <h4>Payment Methods</h4>
+                    <p>COD, Credit Card: Visa, Master Card</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DARK FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-main-content">
+                <div class="footer-brand-col">
+                    <img src="/images/nishatlogo.png" alt="Nishat Logo" class="footer-logo">
+                    <p>Pakistan's leading fashion & lifestyle brand — quality fabric and timeless design for every season.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Information</h4>
+                    <a href="#">Order Tracking</a>
+                    <a href="#">Store Locator</a>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Services</h4>
+                    <a href="#">FAQs</a>
+                    <a href="#">Size Guide</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">Returns & Exchange</a>
+                </div>
+                <div class="footer-col footer-newsletter">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe for offers & new arrivals.</p>
+                    <form class="newsletter-form" onsubmit="return false;">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom-bar">
+            <div>
+                <p>&copy; <span id="year"></span> Nishat Linen. All rights reserved. | 21 Km Ferozpur Road, Lahore, Pakistan.</p>
+                <div class="footer-payments">
+                    <i class="fa-brands fa-cc-visa"></i>
+                    <i class="fa-brands fa-cc-mastercard"></i>
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        
+
+          function toggleMenu() {
+    document.querySelector(".nav-menu ul")
+            .classList.toggle("mobile-menu");
+    }
+        // Filter panel open/close
+        function openFilter() {
+            document.getElementById('filterPanel').classList.add('open');
+            document.getElementById('filterOverlay').classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeFilter() {
+            document.getElementById('filterPanel').classList.remove('open');
+            document.getElementById('filterOverlay').classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+
+        // Price preset buttons
+        function setPrice(min, max) {
+            document.querySelector('[name="minPrice"]').value = min;
+            document.querySelector('[name="maxPrice"]').value = max;
+        }
+
+
+
+    function openSidebar(){
+        document.getElementById("mobileSidebar").classList.add("open");
+        document.getElementById("mobileOverlay").classList.add("show");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeSidebar(){
+        document.getElementById("mobileSidebar").classList.remove("open");
+        document.getElementById("mobileOverlay").classList.remove("show");
+        document.body.style.overflow = "";
+    }
+
+    </script>
+</body>
+</html>

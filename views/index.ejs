@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NISHAT OUTLET</title>
+    <link rel="stylesheet" href="/css/firstClone.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="announcement-bar">
+        Today deal sale off 50%. End in time. Hurry Up!!
+    </div>
+
+<header class="main-header">
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="closeSidebar()"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-header">
+            <h2>MENU</h2>
+            <button class="sidebar-close" onclick="closeSidebar()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <ul class="sidebar-links">
+            <li><a href="/collections/best-bargains">BEST BARGAINS</a></li>
+            <li><a href="/collections/unstitched">UNSTITCHED</a></li>
+            <li><a href="/collections/loose-fabric">LOOSE FABRIC</a></li>
+            <li><a href="/collections/ready-to-wear">READY TO WEAR</a></li>
+            <li><a href="/collections/luxury">LUXURY</a></li>
+            <li><a href="/collections/men">MEN</a></li>
+            <li><a href="/collections/lowers">LOWERS</a></li>
+            <li><a href="/collections/fashion">FASHION</a></li>
+            <li><a href="/products" class="all-products-link">ALL PRODUCTS</a></li>
+        </ul>
+    </aside>
+
+    <div id="menuBar">
+
+        <!-- LEFT -->
+        <div class="left-header">
+            <button class="hamburger-btn" onclick="openSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- CENTER LOGO -->
+        <a href="/">
+            <img id="logo" src="/images/nishatlogo.png" alt="nishat logo">
+        </a>
+
+        <!-- RIGHT -->
+        <div class="right">
+            <a href="#" class="icon-link"><i class="fa-solid fa-magnifying-glass icons"></i></a>
+            <a href="#" class="icon-link"><i class="fa-regular fa-heart icons"></i></a>
+            <a href="/checkout" class="icon-link"><i class="fa-solid fa-bag-shopping icons"></i></a>
+
+            <% if (currentUser && currentUser.role === 'admin') { %>
+                <a href="/admin" class="nav-pill nav-pill-back">
+                    <i class="fa-solid fa-gauge"></i><span class="pill-text">Admin Panel</span>
+                </a>
+            <% } %>
+
+            <% if (!currentUser) { %>
+                <a href="/auth/login" class="nav-pill nav-pill-outline">
+                    <i class="fa-solid fa-right-to-bracket"></i><span class="pill-text">Login</span>
+                </a>
+                <a href="/auth/register" class="nav-pill nav-pill-solid">
+                    <i class="fa-solid fa-user-plus"></i><span class="pill-text">Register</span>
+                </a>
+            <% } else { %>
+                <form action="/auth/logout" method="POST" style="display:inline;">
+                    <button type="submit" class="nav-pill nav-pill-logout">
+                        <i class="fa-solid fa-right-from-bracket"></i><span class="pill-text">Logout</span>
+                    </button>
+                </form>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Desktop Nav -->
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="/collections/best-bargains">BEST BARGAINS</a></li>
+            <li><a href="/collections/unstitched">UNSTITCHED</a></li>
+            <li><a href="/collections/loose-fabric">LOOSE FABRIC</a></li>
+            <li><a href="/collections/ready-to-wear">READY TO WEAR</a></li>
+            <li><a href="/collections/luxury">LUXURY</a></li>
+            <li><a href="/collections/men">MEN</a></li>
+            <li><a href="/collections/lowers">LOWERS</a></li>
+            <li><a href="/collections/fashion">FASHION</a></li>
+            <li><a href="/products" class="all-products-link">ALL PRODUCTS</a></li>
+        </ul>
+    </nav>
+</header>
+
+    <img id="landing_img" src="https://nishatlinenfps.com/cdn/shop/files/2_7b284221-d11d-4f60-b6d4-231509e1e04d.jpg?v=1770197013&width=1500" alt="Banner 1">
+
+    <h3 class="sectionTitle"><span>EXPLORE SEASONS</span></h3>
+
+    <div class="products-grid">
+        <div class="products-card">
+            <a href="/collections/summer-all">
+                <img src="//nishatlinenfps.com/cdn/shop/files/1_0fa93865-717e-4331-aeab-f27239b429dd.jpg" alt="">
+                <h3>SUMMER</h3>
+            </a>
+        </div>
+        <div class="products-card">
+            <a href="/collections/winter-all">
+                <img src="//nishatlinenfps.com/cdn/shop/files/6_358ae107-3bb4-4454-9c8d-6fbf91bb0d26.jpg" alt="">
+                <h3>WINTER</h3>
+            </a>
+        </div>
+    </div>
+
+    <h3 class="sectionTitle"><span>SHOP BY PERCENTAGES</span></h3>
+
+    <div class="products-grid">
+        <div class="products-card">
+            <img src="/images/50off.png" alt="Nishat Linen img">
+            <h3>FLAT 50% OFF</h3>
+        </div>
+        <div class="products-card">
+            <img src="/images/40off.png" alt="Nishat Linen Image">
+            <h3>FLAT 40% OFF</h3>
+        </div>
+        <div class="products-card">
+            <img src="/images/40off2.png" alt="Nishat Linen Image">
+            <h3>FLAT 40% OFF</h3>
+        </div>
+    </div>
+
+    <h3 class="sectionTitle"><span>EXPLORE CATEGORIES</span></h3>
+
+    <div class="products-grid">
+        <div class="products-card">
+            <img src="/images/unstiched.png" alt="Nishat Linen Image">
+            <h3>UNSTICHED</h3>
+        </div>
+        <div class="products-card">
+            <img src="/images/loosefabric.png" alt="Nishat Linen Image">
+            <h3>LOOSE FABRIC</h3>
+        </div>
+        <div class="products-card">
+            <img src="/images/Luxury.png" alt="Nishat Linen Image">
+            <h3>LUXURY</h3>
+        </div>
+        <div class="products-card">
+            <img src="/images/RTWear.png" alt="Nishat Linen Image">
+            <h3>READY TO WEAR</h3>
+        </div>
+        <div class="products-card">
+            <img src="/images/lowers.png" alt="Nishat Linen Image">
+            <h3>LOWERS</h3>
+        </div>
+    </div>
+
+    <h3 class="sectionTitle"><span>EXPLORE TYPES</span></h3>
+
+    <div class="products-grid">
+        <div class="products-card">
+            <img src="https://nishatlinenfps.com/cdn/shop/files/1_513b5b20-b4f8-4ef4-814f-2568e89efca9.jpg?v=1770197698" alt="Unstitched">
+            <h3>PRINTED</h3>
+        </div>
+        <div class="products-card">
+            <img src="https://nishatlinenfps.com/cdn/shop/files/embroidered-01.jpg?v=1770197717" alt="Embroidered">
+            <h3>EMBROIDERED</h3>
+        </div>
+        <div class="products-card">
+            <img src="https://nishatlinenfps.com/cdn/shop/files/2_5f1e2a32-2d9b-4cfc-b7ff-36ef2df1d362.jpg?v=1770197743" alt="Unstitched">
+            <h3>UNSTITCHED</h3>
+        </div>
+        <div class="products-card">
+            <img src="https://nishatlinenfps.com/cdn/shop/files/MEN2.jpg?v=1770197779" alt="Men Collection">
+            <h3>MEN</h3>
+        </div>
+    </div>
+
+    <h3 class="sectionTitle"><span>EXPLORE PIECES</span></h3>
+
+    <div class="products-grid">
+        <div class="products-card">
+            <img src="https://nishatlinenfps.com/cdn/shop/files/1_cffdc8ed-338d-4a99-a042-c69e04012ed5.jpg" alt="Nishat Collection">
+            <h3>1-PIECE</h3>
+        </div>
+        <div class="products-card">
+            <img src="https://nishatlinenfps.com/cdn/shop/files/2_piece.jpg" alt="2-Piece">
+            <h3>2-PIECE</h3>
+        </div>
+        <div class="products-card">
+            <img src="https://nishatlinenfps.com/cdn/shop/files/3_pc.jpg" alt="3-Piece">
+            <h3>3-PIECE</h3>
+        </div>
+    </div>
+
+    <!-- WHITE TRUST-BADGE STRIP -->
+    <div class="footer-top">
+        <div class="footer-top-content">
+            <div class="footer-box">
+                <i class="fa-solid fa-truck"></i>
+                <div>
+                    <h4>Track Your Order</h4>
+                    <p>Click here for quick update</p>
+                </div>
+            </div>
+            <div class="footer-box">
+                <i class="fa-solid fa-headset"></i>
+                <div>
+                    <h4>SUPPORT 24/7</h4>
+                    <p>Contact us 24 hours a day, 7 days a week</p>
+                </div>
+            </div>
+            <div class="footer-box">
+                <i class="fa-solid fa-lock"></i>
+                <div>
+                    <h4>100% PAYMENT SECURE</h4>
+                    <p>We ensure secure payment with PEV</p>
+                </div>
+            </div>
+            <div class="footer-box">
+                <i class="fa-solid fa-credit-card"></i>
+                <div>
+                    <h4>Payment Methods</h4>
+                    <p>COD, Credit Card: Visa, Master Card</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DARK FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-main-content">
+                <div class="footer-brand-col">
+                    <img src="/images/nishatlogo.png" alt="Nishat Logo" class="footer-logo">
+                    <p>Pakistan's leading fashion & lifestyle brand — quality fabric and timeless design for every season.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Information</h4>
+                    <a href="#">Order Tracking</a>
+                    <a href="#">Store Locator</a>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Services</h4>
+                    <a href="#">FAQs</a>
+                    <a href="#">Size Guide</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">Returns & Exchange</a>
+                </div>
+                <div class="footer-col footer-newsletter">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe for offers & new arrivals.</p>
+                    <form class="newsletter-form" onsubmit="return false;">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom-bar">
+            <div>
+                <p>&copy; <span id="year"></span> Nishat Linen. All rights reserved. | 21 Km Ferozpur Road, Lahore, Pakistan.</p>
+                <div class="footer-payments">
+                    <i class="fa-brands fa-cc-visa"></i>
+                    <i class="fa-brands fa-cc-mastercard"></i>
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function openSidebar(){
+        document.getElementById("mobileSidebar").classList.add("open");
+        document.getElementById("mobileOverlay").classList.add("show");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeSidebar(){
+        document.getElementById("mobileSidebar").classList.remove("open");
+        document.getElementById("mobileOverlay").classList.remove("show");
+        document.body.style.overflow = "";
+    }
+</script>
+
+<!-- Flash Toasts -->
+<% if ((success && success.length > 0) || (error && error.length > 0)) { %>
+<div style="position:fixed;top:18px;right:18px;z-index:9999;display:flex;flex-direction:column;gap:8px;" id="flashToast">
+    <% if (success) { success.forEach(msg => { %>
+        <div style="padding:12px 20px;background:#e8f5e9;color:#2e7d32;border-left:4px solid #2e7d32;border-radius:8px;font-size:14px;font-family:Arial,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,0.1);">
+            <i class="fa-solid fa-circle-check"></i> <%= msg %>
+        </div>
+    <% }) } %>
+    <% if (error) { error.forEach(msg => { %>
+        <div style="padding:12px 20px;background:#fce4ec;color:#c62828;border-left:4px solid #c62828;border-radius:8px;font-size:14px;font-family:Arial,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,0.1);">
+            <i class="fa-solid fa-circle-exclamation"></i> <%= msg %>
+        </div>
+    <% }) } %>
+</div>
+<script>setTimeout(() => { const t = document.getElementById('flashToast'); if(t){t.style.transition='0.5s';t.style.opacity='0';setTimeout(()=>t.remove(),500);} }, 4000);</script>
+<% } %>
+
+</body>
+</html>

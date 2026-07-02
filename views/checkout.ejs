@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout – NISHAT</title>
+    <link rel="stylesheet" href="/css/firstClone.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { background: #f4f5f7; }
+        .checkout-wrapper { display:flex; align-items:center; justify-content:center; min-height:75vh; padding:40px 16px; }
+        .checkout-card { background:#fff; border-radius:14px; box-shadow:0 4px 24px rgba(0,0,0,0.10); padding:50px 44px; width:100%; max-width:480px; text-align:center; }
+        .checkout-icon { width:72px; height:72px; border-radius:50%; background:#eef2ff; color:#3949ab; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 20px; }
+        .checkout-title { font-size:22px; font-weight:700; letter-spacing:1.5px; color:#111; margin-bottom:8px; }
+        .checkout-sub { color:#888; font-size:13px; margin-bottom:26px; }
+        .checkout-welcome { background:#f8f8f8; border-radius:10px; padding:14px 18px; font-size:14px; color:#333; margin-bottom:26px; text-align:left; display:flex; align-items:center; gap:10px; }
+        .checkout-note { color:#999; font-size:13px; margin-bottom:26px; }
+        .checkout-btn { display:inline-flex; align-items:center; gap:8px; padding:13px 26px; background:#111; color:#fff; border-radius:8px; text-decoration:none; font-weight:700; font-size:14px; letter-spacing:0.5px; transition:0.2s; }
+        .checkout-btn:hover { background:#c9a84c; }
+    </style>
+</head>
+<body>
+
+<header class="main-header">
+    <div id="menuBar">
+        <div class="left-header"></div>
+        <a href="/"><img id="logo" src="/images/nishatlogo.png" alt="Nishat Logo"></a>
+        <div class="right">
+            <a href="/products" class="nav-pill nav-pill-outline">
+                <i class="fa-solid fa-arrow-left"></i><span class="pill-text">Back to Shop</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="checkout-wrapper">
+    <div class="checkout-card">
+        <div class="checkout-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+        <h1 class="checkout-title">CHECKOUT</h1>
+        <p class="checkout-sub">You're just a few steps away</p>
+
+        <% if (currentUser) { %>
+            <div class="checkout-welcome">
+                <i class="fa-solid fa-circle-check" style="color:#2e7d32;"></i>
+                <span>Welcome, <strong><%= currentUser.name %></strong> — your session is protected and secure.</span>
+            </div>
+        <% } %>
+
+        <p class="checkout-note">Cart & payment integration coming soon.</p>
+        <a href="/products" class="checkout-btn"><i class="fa-solid fa-arrow-left"></i> Continue Shopping</a>
+    </div>
+</div>
+
+</body>
+</html>
