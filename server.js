@@ -25,15 +25,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const MONGO_URI = 'mongodb://localhost:27017/TA3_nishat';
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI)
-    .then(() => console.log('MongoDB connected → TA3_nishat'))
+    .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error(err));
 
+    
 // Sessions
 app.use(session({
-    secret: 'nishat_secret_key_2025',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: MONGO_URI }),
@@ -285,4 +286,8 @@ app.post('/admin/products/:id/delete', isAdmin, async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
